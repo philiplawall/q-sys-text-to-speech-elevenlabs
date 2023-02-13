@@ -1,13 +1,10 @@
 -- Basic Framework Plugin
 -- by QSC
 -- October 2020
-
 -- Information block for the plugin
---[[ #include "info.lua" ]]
-
--- Define the color of the plugin object in the design
+--[[ #include "info.lua" ]] -- Define the color of the plugin object in the design
 function GetColor(props)
-  return { 0,83,214 }
+  return {0, 83, 214}
 end
 
 -- The name that will initially display when dragged into a design
@@ -16,7 +13,7 @@ function GetPrettyName(props)
 end
 
 -- Optional function used if plugin has multiple pages
-PageNames = { "Main", "Help" }  --List the pages within the plugin
+PageNames = {"Main", "Help"} -- List the pages within the plugin
 function GetPages(props)
   local pages = {}
   --[[ #include "pages.lua" ]]
@@ -27,7 +24,7 @@ end
 function GetModel(props)
   local model = {}
   --[[ #include "model.lua" ]]
- return model
+  return model
 end
 
 -- Define User configurable Properties of the plugin
@@ -71,16 +68,19 @@ function GetControls(props)
   return ctrls
 end
 
---Layout of controls and graphics for the plugin UI to display
+-- Layout of controls and graphics for the plugin UI to display
 function GetControlLayout(props)
   local layout = {}
   local graphics = {}
   local about_blurb = [[
-This plugin was developed to be a free and open-source method to leverage Google's (paid) Deepmind-powered Text to Speech API. This plugin has been deployed under an MIT license, so you are free to reuse, distribute and profit from this code. You must generate a valid Google API key to use this plugin, and once you do you will be subject to Google's own pricing for API usage. The cost is very cheap, and currently at the time of development is the following:
+This plugin was developed to be a free and open-source method to leverage ElevenLabs Text to Speech API. This plugin has been deployed under an MIT license, so you are free to reuse, distribute and profit from this code. You must generate a valid ElevenLabs API key to use this plugin, and once you do you will be subject to ElevenLabs own pricing for API usage. The cost is very cheap, and currently at the time of development is the following:
 
-Standard voices: $4.00 USD per 1 million characters
-WaveNet voices: $16.00 USD per 1 million characters
-Neural2 voices: $16.00 USD per 1 million characters
+(pricing is per month)
+0$: 10000 characters per month, no custom voices
+5$: 30000 characters per month, up to 10 custom voices
+22$: 100000 characters per month, up to 30 custom voices
+99$: 500000 characters per month, up to 60 custom voices
+330$: 2000000 characters per month, up to 120 custom voices
       
 Audio files are only generated when you press the generate button. They are stored locally on the core in 1 of the 10 slots. When played back, the API is not used, and after converting your strings of text to audio, and saving them in the slots, the API key can happily be removed, and the core does not need access to the internet. I would advise deploying the plugin to shared environments in this manner so your API key cannot be abused by a third party. 
 
@@ -90,7 +90,7 @@ Contact me via GitHub, send a message or open an issue, if you have any problems
   return layout, graphics
 end
 
---Start event based logic
+-- Start event based logic
 if Controls then
   --[[ #include "runtime.lua" ]]
 end

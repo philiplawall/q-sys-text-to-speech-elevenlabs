@@ -26,9 +26,9 @@ if CurrentPage == "Main" then
   })
   table.insert(graphics,{
     Type = "Image",
-    Image = "--[[ #encode "DeepMindLogo.png" ]]",
-    Position = { 198,752 },
-    Size = { 164,48 },
+    Image = "--[[ #encode "ElevenLabsLogo.png" ]]",
+    Position = { 60,752 },
+    Size = { 355, 48}
   })
   table.insert(graphics,{
     Type = "Text",
@@ -45,7 +45,7 @@ if CurrentPage == "Main" then
   })
   table.insert(graphics,{
     Type = "Text",
-    Text = "Developed by Jason Krasavage",
+    Text = "Developed by Philip Lawall",
     Position = {367,781},
     Size = {189,19},
     Font = "Roboto",
@@ -70,9 +70,9 @@ if CurrentPage == "Main" then
   })
   table.insert(graphics,{
     Type = "Text",
-    Text = "Valid Google API Key:",
-    Position = {10,82},
-    Size = {163,31},
+    Text = "Valid ElevenLabs API Key:",
+    Position = {2,82},
+    Size = {168,31},
     Font = "Roboto",
     FontSize = 14,
     FontStyle = "Medium",
@@ -81,12 +81,12 @@ if CurrentPage == "Main" then
   })
   layout["api_connected"] = {
     IndicatorType = "LED",
-    Position = {156,82},
+    Position = {160,82},
     Size = {31,31},
     Margin = 10
   }
   layout["api_key"] = {
-    PrettyName = "Google API Key",
+    PrettyName = "ElevenLabs API Key",
     Style = "TextField",
     Position = {187,82},
     Size = {352,31},
@@ -112,30 +112,8 @@ if CurrentPage == "Main" then
   })
   table.insert(graphics,{
     Type = "Text",
-    Text = "Voice Type",
-    Position = {135,117},
-    Size = {103,31},
-    Font = "Roboto",
-    FontSize = 14,
-    FontStyle = "Medium",
-    HTextAlign = "Center",
-    VTextAlign = "Center"
-  })
-  table.insert(graphics,{
-    Type = "Text",
-    Text = "Language",
-    Position = {286,117},
-    Size = {103,31},
-    Font = "Roboto",
-    FontSize = 14,
-    FontStyle = "Medium",
-    HTextAlign = "Center",
-    VTextAlign = "Center"
-  })
-  table.insert(graphics,{
-    Type = "Text",
     Text = "Voice",
-    Position = {436,117},
+    Position = {135,117},
     Size = {103,31},
     Font = "Roboto",
     FontSize = 14,
@@ -154,8 +132,8 @@ if CurrentPage == "Main" then
     CornerRadius = 10,
     FontSize = 12
   }
-  layout["voice_type"] = {
-    PrettyName = "Voice Type Combo Box",
+  layout["voice_selector"] = {
+    PrettyName = "Voice Combo Box",
     Style = "ComboBox",
     Position = {135,148},
     Size = {103,25},
@@ -165,31 +143,9 @@ if CurrentPage == "Main" then
     CornerRadius = 10,
     FontSize = 12
   }
-  layout["language"] = {
-    PrettyName = "Language Combo Box",
-    Style = "ComboBox",
-    Position = {286,148},
-    Size = {103,25},
-    Color = {255,255,255},
-    StrokeWidth = 2,
-    StrokeColor = {221,221,221},
-    CornerRadius = 10,
-    FontSize = 12
-  }
-  layout["voice_name"] = {
-    PrettyName = "Voice Name Combo Box",
-    Style = "ComboBox",
-    Position = {436,148},
-    Size = {103,25},
-    Color = {255,255,255},
-    StrokeWidth = 2,
-    StrokeColor = {221,221,221},
-    CornerRadius = 10,
-    FontSize = 12
-  }
   table.insert(graphics,{
     Type = "Text",
-    Text = "Gender:",
+    Text = "Voice:",
     Position = {10,191},
     Size = {81,31},
     Font = "Roboto",
@@ -198,79 +154,10 @@ if CurrentPage == "Main" then
     HTextAlign = "Left",
     VTextAlign = "Center"
   })
-  table.insert(graphics,{
-    Type = "Text",
-    Text = "Name:",
-    Position = {10,230},
-    Size = {81,31},
-    Font = "Roboto",
-    FontSize = 14,
-    FontStyle = "Medium",
-    HTextAlign = "Left",
-    VTextAlign = "Center"
-  })
-  table.insert(graphics,{
-    Type = "Text",
-    Text = "Language:",
-    Position = {286,191},
-    Size = {81,31},
-    Font = "Roboto",
-    FontSize = 14,
-    FontStyle = "Medium",
-    HTextAlign = "Left",
-    VTextAlign = "Center"
-  })
-  table.insert(graphics,{
-    Type = "Text",
-    Text = "Code:",
-    Position = {286,230},
-    Size = {81,31},
-    Font = "Roboto",
-    FontSize = 14,
-    FontStyle = "Medium",
-    HTextAlign = "Left",
-    VTextAlign = "Center"
-  })
-  layout["selected_gender"] = {
-    PrettyName = "Selected Gender",
+  layout["selected_voice"] = {
+    PrettyName = "Selected Voice",
     Style = "TextField",
     Position = {91,191},
-    Size = {170,31},
-    Color = {221,221,221},
-    StrokeWidth = 2,
-    StrokeColor = {156,156,156},
-    CornerRadius = 0,
-    FontSize = 12,
-    FontColor = {0,0,0}
-  }
-  layout["selected_name"] = {
-    PrettyName = "Selected Name",
-    Style = "TextField",
-    Position = {91,230},
-    Size = {170,31},
-    Color = {221,221,221},
-    StrokeWidth = 2,
-    StrokeColor = {156,156,156},
-    CornerRadius = 0,
-    FontSize = 12,
-    FontColor = {0,0,0}
-  }
-  layout["selected_language"] = {
-    PrettyName = "Selected Language",
-    Style = "TextField",
-    Position = {367,191},
-    Size = {170,31},
-    Color = {221,221,221},
-    StrokeWidth = 2,
-    StrokeColor = {156,156,156},
-    CornerRadius = 0,
-    FontSize = 12,
-    FontColor = {0,0,0}
-  }
-  layout["selected_language_code"] = {
-    PrettyName = "Selected Language Code",
-    Style = "TextField",
-    Position = {367,230},
     Size = {170,31},
     Color = {221,221,221},
     StrokeWidth = 2,
@@ -473,9 +360,9 @@ elseif CurrentPage == "Help" then
   })
   table.insert(graphics,{
     Type = "Image",
-    Image = "--[[ #encode "DeepMindLogo.png" ]]",
-    Position = { 198,752 },
-    Size = { 164,48 },
+    Image = "--[[ #encode "ElevenLabsLogo.png" ]]",
+    Position = { 60,752 },
+    Size = { 355, 48}
   })
   table.insert(graphics,{
     Type = "Text",
@@ -529,7 +416,7 @@ elseif CurrentPage == "Help" then
   })
   table.insert(graphics,{
     Type = "Text",
-    Text = "Developed by Jason Krasavage",
+    Text = "Developed by Philip Lawall",
     Position = {367,781},
     Size = {189,19},
     Font = "Roboto",
