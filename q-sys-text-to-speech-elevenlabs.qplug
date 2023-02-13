@@ -5,7 +5,7 @@
 PluginInfo = {
   Name = "ElevenLabs~Open Source Text to Speech",
   Version = "1.0",
-  BuildVersion = "0.0.0.38",
+  BuildVersion = "1.0.0.0",
   Id = "4c315943-9d5d-4995-a9da-c6d26d222a3d",
   Author = "Philip Lawall",
   Description = "Open source text to speech plugin that uses the ElevenLabs API."
@@ -118,14 +118,6 @@ function GetControls(props)
     Count = 1,
     PinStyle = "None",
     UserPin = true
-  })
-  table.insert(ctrls, {
-    Name = "selected_voice",
-    ControlType = "Indicator",
-    IndicatorType = "Text",
-    PinStyle = "None",
-    UserPin = true,
-    Count = 1
   })
   table.insert(ctrls, {
     Name = "slot_delete",
@@ -340,33 +332,10 @@ Contact me via GitHub, send a message or open an issue, if you have any problems
       CornerRadius = 10,
       FontSize = 12
     }
-    table.insert(graphics,{
-      Type = "Text",
-      Text = "Voice:",
-      Position = {10,191},
-      Size = {81,31},
-      Font = "Roboto",
-      FontSize = 14,
-      FontStyle = "Medium",
-      HTextAlign = "Left",
-      VTextAlign = "Center"
-    })
-    layout["selected_voice"] = {
-      PrettyName = "Selected Voice",
-      Style = "TextField",
-      Position = {91,191},
-      Size = {170,31},
-      Color = {221,221,221},
-      StrokeWidth = 2,
-      StrokeColor = {156,156,156},
-      CornerRadius = 0,
-      FontSize = 12,
-      FontColor = {0,0,0}
-    }
     layout["text"] = {
       PrettyName = "Conversion Text",
       Style = "TextField",
-      Position = {10,274},
+      Position = {10,204},
       Size = {411,62},
       Color = {255,255,255},
       StrokeWidth = 2,
@@ -380,7 +349,7 @@ Contact me via GitHub, send a message or open an issue, if you have any problems
     layout["convert_tts"] = {
       PrettyName = "Generate Audio",
       ButtonStyle = "Trigger",
-      Position = {434,274},
+      Position = {434,204},
       Size = {103,62},
       ButtonVisualStyle = "Gloss",
       UnlinkOffColor = true,
@@ -398,7 +367,7 @@ Contact me via GitHub, send a message or open an issue, if you have any problems
     table.insert(graphics,{
       Type = "Text",
       Text = "Slot",
-      Position = {10,357},
+      Position = {10,287},
       Size = {44,31},
       Font = "Roboto",
       FontSize = 14,
@@ -409,7 +378,7 @@ Contact me via GitHub, send a message or open an issue, if you have any problems
     table.insert(graphics,{
       Type = "Text",
       Text = "Name",
-      Position = {54,357},
+      Position = {54,287},
       Size = {128,31},
       Font = "Roboto",
       FontSize = 14,
@@ -420,7 +389,7 @@ Contact me via GitHub, send a message or open an issue, if you have any problems
     table.insert(graphics,{
       Type = "Text",
       Text = "Text",
-      Position = {182,357},
+      Position = {182,287},
       Size = {251,31},
       Font = "Roboto",
       FontSize = 14,
@@ -431,7 +400,7 @@ Contact me via GitHub, send a message or open an issue, if you have any problems
     table.insert(graphics,{
       Type = "Text",
       Text = "Delete",
-      Position = {433,357},
+      Position = {433,287},
       Size = {52,31},
       Font = "Roboto",
       FontSize = 14,
@@ -442,7 +411,7 @@ Contact me via GitHub, send a message or open an issue, if you have any problems
     table.insert(graphics,{
       Type = "Text",
       Text = "Play",
-      Position = {485,357},
+      Position = {485,287},
       Size = {52,31},
       Font = "Roboto",
       FontSize = 14,
@@ -454,7 +423,7 @@ Contact me via GitHub, send a message or open an issue, if you have any problems
       table.insert(graphics,{
         Type = "Text",
         Text = tostring(i),
-        Position = {10,388+(32*(i-1))},
+        Position = {10,318+(32*(i-1))},
         Size = {44,31},
         Font = "Roboto",
         FontSize = 14,
@@ -465,7 +434,7 @@ Contact me via GitHub, send a message or open an issue, if you have any problems
       layout["slot_name "..i] = {
         PrettyName = "Slot Friendly Name "..i,
         Style = "TextField",
-        Position = {54,388+(32*(i-1))},
+        Position = {54,318+(32*(i-1))},
         Size = {128,31},
         Color = {255,255,255},
         StrokeWidth = 2,
@@ -480,7 +449,7 @@ Contact me via GitHub, send a message or open an issue, if you have any problems
       layout["slot_text "..i] = {
         PrettyName = "Slot Converted Text "..i,
         Style = "TextField",
-        Position = {182,388+(32*(i-1))},
+        Position = {182,318+(32*(i-1))},
         Size = {251,31},
         Color = {221,221,221},
         StrokeWidth = 2,
@@ -493,7 +462,7 @@ Contact me via GitHub, send a message or open an issue, if you have any problems
       layout["slot_delete "..i] = {
         PrettyName = "Slot Delete Button "..i,
         ButtonStyle = "Trigger",
-        Position = {433,388+(32*(i-1))},
+        Position = {433,318+(32*(i-1))},
         Size = {52,31},
         ButtonVisualStyle = "Gloss",
         UnlinkOffColor = true,
@@ -511,7 +480,7 @@ Contact me via GitHub, send a message or open an issue, if you have any problems
       layout["slot_trigger "..i] = {
         PrettyName = "Slot Play Button "..i,
         ButtonStyle = "Trigger",
-        Position = {485,388+(32*(i-1))},
+        Position = {485,318+(32*(i-1))},
         Size = {52,31},
         ButtonVisualStyle = "Gloss",
         UnlinkOffColor = true,
@@ -658,26 +627,6 @@ if Controls then
   
   generate()
   
-  -- unfortunately we will error out with a max execution limits errors if we try to decode any base64 encoded strings that are longer than about ~12000 characters
-  -- the solution to this problem is to piece through the encoding "chunk by chunk", and to do each chunk of decoding inside of a timer, becuase timers are special
-  -- in qsys in that they use a new subprocess that is seperate from the main thread so you will not run into max execution limits when recursing through the string
-  
-  currently_decoding = false
-  decoding_timer = Timer.New()
-  current_data = ""
-  
-  decoding_timer.EventHandler = function()
-    if currently_decoding == false then
-      if audio_file ~= nil then
-        filedata = audio_file:write(current_data)
-        io.close(audio_file)
-        decoding_timer:Stop()
-      end
-    end
-  end
-  
-  chunk_size = 12000
-  
   -- Control logic
   
   voice_names = {}
@@ -687,26 +636,6 @@ if Controls then
   temp_languages = {}
   
   Controls.voice_selector.EventHandler = function()
-    local temp = {}
-    local temp_2 = {}
-    for x, y in ipairs(voice_names) do
-      if y["voiceType"] == Controls.voice_selector.String then
-        table.insert(temp, y["name"])
-      end
-    end
-    local hash = {}
-    local res = {}
-  
-    for _, v in ipairs(temp_2) do
-      if (not hash[v]) then
-        res[#res + 1] = v -- you could print here instead of saving to result table if you wanted
-        hash[v] = true
-      end
-  
-    end
-  
-    table.sort(res)
-  
     if Controls.voice_selector.String ~= "" then
       Controls.convert_tts.IsDisabled = false
     end
@@ -753,8 +682,7 @@ if Controls then
   end
   
   function updateControls()
-    -- if not System.IsEmulating then
-    if true then
+    if not System.IsEmulating then
       Controls.text.IsDisabled = false
       Controls.slot_selector.IsDisabled = false
       Controls.voice_selector.IsDisabled = false

@@ -143,33 +143,10 @@ if CurrentPage == "Main" then
     CornerRadius = 10,
     FontSize = 12
   }
-  table.insert(graphics,{
-    Type = "Text",
-    Text = "Voice:",
-    Position = {10,191},
-    Size = {81,31},
-    Font = "Roboto",
-    FontSize = 14,
-    FontStyle = "Medium",
-    HTextAlign = "Left",
-    VTextAlign = "Center"
-  })
-  layout["selected_voice"] = {
-    PrettyName = "Selected Voice",
-    Style = "TextField",
-    Position = {91,191},
-    Size = {170,31},
-    Color = {221,221,221},
-    StrokeWidth = 2,
-    StrokeColor = {156,156,156},
-    CornerRadius = 0,
-    FontSize = 12,
-    FontColor = {0,0,0}
-  }
   layout["text"] = {
     PrettyName = "Conversion Text",
     Style = "TextField",
-    Position = {10,274},
+    Position = {10,204},
     Size = {411,62},
     Color = {255,255,255},
     StrokeWidth = 2,
@@ -183,7 +160,7 @@ if CurrentPage == "Main" then
   layout["convert_tts"] = {
     PrettyName = "Generate Audio",
     ButtonStyle = "Trigger",
-    Position = {434,274},
+    Position = {434,204},
     Size = {103,62},
     ButtonVisualStyle = "Gloss",
     UnlinkOffColor = true,
@@ -201,7 +178,7 @@ if CurrentPage == "Main" then
   table.insert(graphics,{
     Type = "Text",
     Text = "Slot",
-    Position = {10,357},
+    Position = {10,287},
     Size = {44,31},
     Font = "Roboto",
     FontSize = 14,
@@ -212,7 +189,7 @@ if CurrentPage == "Main" then
   table.insert(graphics,{
     Type = "Text",
     Text = "Name",
-    Position = {54,357},
+    Position = {54,287},
     Size = {128,31},
     Font = "Roboto",
     FontSize = 14,
@@ -223,7 +200,7 @@ if CurrentPage == "Main" then
   table.insert(graphics,{
     Type = "Text",
     Text = "Text",
-    Position = {182,357},
+    Position = {182,287},
     Size = {251,31},
     Font = "Roboto",
     FontSize = 14,
@@ -234,7 +211,7 @@ if CurrentPage == "Main" then
   table.insert(graphics,{
     Type = "Text",
     Text = "Delete",
-    Position = {433,357},
+    Position = {433,287},
     Size = {52,31},
     Font = "Roboto",
     FontSize = 14,
@@ -245,7 +222,7 @@ if CurrentPage == "Main" then
   table.insert(graphics,{
     Type = "Text",
     Text = "Play",
-    Position = {485,357},
+    Position = {485,287},
     Size = {52,31},
     Font = "Roboto",
     FontSize = 14,
@@ -257,7 +234,7 @@ if CurrentPage == "Main" then
     table.insert(graphics,{
       Type = "Text",
       Text = tostring(i),
-      Position = {10,388+(32*(i-1))},
+      Position = {10,318+(32*(i-1))},
       Size = {44,31},
       Font = "Roboto",
       FontSize = 14,
@@ -268,7 +245,7 @@ if CurrentPage == "Main" then
     layout["slot_name "..i] = {
       PrettyName = "Slot Friendly Name "..i,
       Style = "TextField",
-      Position = {54,388+(32*(i-1))},
+      Position = {54,318+(32*(i-1))},
       Size = {128,31},
       Color = {255,255,255},
       StrokeWidth = 2,
@@ -283,7 +260,7 @@ if CurrentPage == "Main" then
     layout["slot_text "..i] = {
       PrettyName = "Slot Converted Text "..i,
       Style = "TextField",
-      Position = {182,388+(32*(i-1))},
+      Position = {182,318+(32*(i-1))},
       Size = {251,31},
       Color = {221,221,221},
       StrokeWidth = 2,
@@ -296,7 +273,7 @@ if CurrentPage == "Main" then
     layout["slot_delete "..i] = {
       PrettyName = "Slot Delete Button "..i,
       ButtonStyle = "Trigger",
-      Position = {433,388+(32*(i-1))},
+      Position = {433,318+(32*(i-1))},
       Size = {52,31},
       ButtonVisualStyle = "Gloss",
       UnlinkOffColor = true,
@@ -314,7 +291,7 @@ if CurrentPage == "Main" then
     layout["slot_trigger "..i] = {
       PrettyName = "Slot Play Button "..i,
       ButtonStyle = "Trigger",
-      Position = {485,388+(32*(i-1))},
+      Position = {485,318+(32*(i-1))},
       Size = {52,31},
       ButtonVisualStyle = "Gloss",
       UnlinkOffColor = true,

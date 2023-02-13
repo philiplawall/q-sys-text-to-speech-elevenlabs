@@ -37,14 +37,6 @@ table.insert(ctrls, {
   UserPin = true
 })
 table.insert(ctrls, {
-  Name = "selected_voice",
-  ControlType = "Indicator",
-  IndicatorType = "Text",
-  PinStyle = "None",
-  UserPin = true,
-  Count = 1
-})
-table.insert(ctrls, {
   Name = "slot_delete",
   ControlType = "Button",
   ButtonType = "Trigger",
