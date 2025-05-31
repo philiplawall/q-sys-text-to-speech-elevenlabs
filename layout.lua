@@ -147,7 +147,7 @@ if CurrentPage == "Main" then
     PrettyName = "Conversion Text",
     Style = "TextField",
     Position = {10,204},
-    Size = {411,62},
+    Size = {335,62},
     Color = {255,255,255},
     StrokeWidth = 2,
     StrokeColor = {221,221,221},
@@ -160,8 +160,8 @@ if CurrentPage == "Main" then
   layout["convert_tts"] = {
     PrettyName = "Generate Audio",
     ButtonStyle = "Trigger",
-    Position = {434,204},
-    Size = {103,62},
+    Position = {354,204},
+    Size = {183,28},
     ButtonVisualStyle = "Gloss",
     UnlinkOffColor = true,
     Color = {255,255,255},
@@ -169,7 +169,25 @@ if CurrentPage == "Main" then
     StrokeWidth = 2,
     StrokeColor = {0,0,0},
     CornerRadius = 0,
-    Legend = "Generate\rAudio",
+    Legend = "Generate Audio",
+    Font = "Roboto",
+    FontStyle = "Medium Italic",
+    FontSize = 14,
+    FontColor = {0,0,0}
+  }
+  layout["convert_and_play_tts"] = {
+    PrettyName = "Generate and Play Audio",
+    ButtonStyle = "Trigger",
+    Position = {354,238},
+    Size = {183,28},
+    ButtonVisualStyle = "Gloss",
+    UnlinkOffColor = true,
+    Color = {255,255,255},
+    OffColor = {212,255,237},
+    StrokeWidth = 2,
+    StrokeColor = {0,0,0},
+    CornerRadius = 0,
+    Legend = "Generate and Play Audio",
     Font = "Roboto",
     FontStyle = "Medium Italic",
     FontSize = 14,
@@ -230,7 +248,7 @@ if CurrentPage == "Main" then
     HTextAlign = "Center",
     VTextAlign = "Center"
   })
-  for i=1, 10 do
+  for i=1, 11 do
     table.insert(graphics,{
       Type = "Text",
       Text = tostring(i),

@@ -5,7 +5,7 @@
 PluginInfo = {
   Name = "ElevenLabs~Open Source Text to Speech",
   Version = "1.0",
-  BuildVersion = "1.0.0.0",
+  BuildVersion = "1.0.0.8",
   Id = "4c315943-9d5d-4995-a9da-c6d26d222a3d",
   Author = "Philip Lawall",
   Description = "Open source text to speech plugin that uses the ElevenLabs API."
@@ -17,7 +17,7 @@ end
 
 -- The name that will initially display when dragged into a design
 function GetPrettyName(props)
-  return "Open Source TTS " .. PluginInfo.BuildVersion
+  return "ElevenLabs TTS " .. PluginInfo.BuildVersion
 end
 
 -- Optional function used if plugin has multiple pages
@@ -97,6 +97,14 @@ function GetControls(props)
     Count = 1
   })
   table.insert(ctrls, {
+    Name = "convert_and_play_tts",
+    ControlType = "Button",
+    ButtonType = "Trigger",
+    Count = 1,
+    PinStyle = "Input",
+    UserPin = true
+  })
+  table.insert(ctrls, {
     Name = "api_key",
     ControlType = "Text",
     Count = 1,
@@ -125,7 +133,7 @@ function GetControls(props)
     ButtonType = "Trigger",
     PinStyle = "None",
     UserPin = true,
-    Count = 10
+    Count = 11
   })
   table.insert(ctrls, {
     Name = "slot_trigger",
@@ -133,12 +141,12 @@ function GetControls(props)
     ButtonType = "Trigger",
     PinStyle = "Input",
     UserPin = true,
-    Count = 10
+    Count = 11
   })
   table.insert(ctrls, {
     Name = "slot_name",
     ControlType = "Text",
-    Count = 10,
+    Count = 11,
     PinStyle = "None",
     UserPin = true
   })
@@ -148,7 +156,7 @@ function GetControls(props)
     IndicatorType = "Text",
     PinStyle = "None",
     UserPin = true,
-    Count = 10
+    Count = 11
   })
   table.insert(ctrls, {
     Name = "QR",
@@ -336,7 +344,7 @@ Contact me via GitHub, send a message or open an issue, if you have any problems
       PrettyName = "Conversion Text",
       Style = "TextField",
       Position = {10,204},
-      Size = {411,62},
+      Size = {335,62},
       Color = {255,255,255},
       StrokeWidth = 2,
       StrokeColor = {221,221,221},
@@ -349,8 +357,8 @@ Contact me via GitHub, send a message or open an issue, if you have any problems
     layout["convert_tts"] = {
       PrettyName = "Generate Audio",
       ButtonStyle = "Trigger",
-      Position = {434,204},
-      Size = {103,62},
+      Position = {354,204},
+      Size = {183,28},
       ButtonVisualStyle = "Gloss",
       UnlinkOffColor = true,
       Color = {255,255,255},
@@ -358,7 +366,25 @@ Contact me via GitHub, send a message or open an issue, if you have any problems
       StrokeWidth = 2,
       StrokeColor = {0,0,0},
       CornerRadius = 0,
-      Legend = "Generate\rAudio",
+      Legend = "Generate Audio",
+      Font = "Roboto",
+      FontStyle = "Medium Italic",
+      FontSize = 14,
+      FontColor = {0,0,0}
+    }
+    layout["convert_and_play_tts"] = {
+      PrettyName = "Generate and Play Audio",
+      ButtonStyle = "Trigger",
+      Position = {354,238},
+      Size = {183,28},
+      ButtonVisualStyle = "Gloss",
+      UnlinkOffColor = true,
+      Color = {255,255,255},
+      OffColor = {212,255,237},
+      StrokeWidth = 2,
+      StrokeColor = {0,0,0},
+      CornerRadius = 0,
+      Legend = "Generate and Play Audio",
       Font = "Roboto",
       FontStyle = "Medium Italic",
       FontSize = 14,
@@ -419,7 +445,7 @@ Contact me via GitHub, send a message or open an issue, if you have any problems
       HTextAlign = "Center",
       VTextAlign = "Center"
     })
-    for i=1, 10 do
+    for i=1, 11 do
       table.insert(graphics,{
         Type = "Text",
         Text = tostring(i),
@@ -629,6 +655,8 @@ if Controls then
   
   -- Control logic
   
+  autoPlay = false
+  
   voice_names = {}
   voice_ids = {}
   
@@ -638,11 +666,22 @@ if Controls then
   Controls.voice_selector.EventHandler = function()
     if Controls.voice_selector.String ~= "" then
       Controls.convert_tts.IsDisabled = false
+      Controls.convert_and_play_tts.IsDisabled = false
     end
   end
   
   Controls.convert_tts.EventHandler = function()
     convertTTS()
+  end
+  
+  Controls.convert_and_play_tts.EventHandler = function()
+    autoPlay = true
+    convertTTS()
+    -- local selection = tonumber(Controls.slot_selector.String)
+    -- audio_player["root"].String = "Audio/"
+    -- audio_player["directory"].String = ""
+    -- audio_player["filename"].String = "Slot-" .. tostring(selection) .. "-tts.wav"
+    -- audio_player["play"]:Trigger()
   end
   
   Controls.text.EventHandler = function(self)
@@ -661,6 +700,10 @@ if Controls then
   
   function processTTS(data, text)
     local selection = tonumber(Controls.slot_selector.String)
+    if autoPlay then 
+      selection = 11
+    end
+    
     audio_file = io.open("media/Audio/Slot-" .. tostring(selection) .. "-tts.wav", "w+")
     if audio_file ~= nil then
       filedata = audio_file:write(data)
@@ -668,17 +711,30 @@ if Controls then
     else
       pluginError("file==nil")
     end
+    
     text_file = io.open("media/Audio/Slot-" .. tostring(selection) .. "-tts.txt", "w+")
+    
     if text_file ~= nil then
       filedata = text_file:write(text)
       io.close(text_file)
     else
       pluginError("file==nil")
     end
-    Controls.slot_text[selection].String = Controls.text.String
+    if #Controls.slot_name >= selection then    
+      Controls.slot_text[selection].String = Controls.text.String
+    end
     updateControls()
     Controls.api_connected.Boolean = true
     Controls.api_connected.Color = "green"
+  
+    if autoPlay then
+      print("Autoplaying audio for slot " .. tostring(selection))
+      audio_player["root"].String = "Audio/"
+      audio_player["directory"].String = ""
+      audio_player["filename"].String = "Slot-" .. tostring(selection) .. "-tts.wav"
+      audio_player["play"]:Trigger()
+      autoPlay = false
+    end
   end
   
   function updateControls()
@@ -686,7 +742,6 @@ if Controls then
       Controls.text.IsDisabled = false
       Controls.slot_selector.IsDisabled = false
       Controls.voice_selector.IsDisabled = false
-      Controls.selected_voice.IsDisabled = false
       Controls.text.String = ""
       for i = 1, #Controls.slot_trigger do
         if io.open("media/Audio/Slot-" .. tostring(i) .. "-tts.wav", "r") then
@@ -719,7 +774,6 @@ if Controls then
       Controls.text.IsDisabled = true
       Controls.slot_selector.IsDisabled = true
       Controls.voice_selector.IsDisabled = true
-      Controls.selected_voice.IsDisabled = true
     end
   end
   
@@ -731,12 +785,12 @@ if Controls then
       Controls.slot_trigger[i].IsDisabled = true
       Controls.slot_delete[i].IsDisabled = true
     end
-    Controls.selected_voice.String = ""
   
     Controls.voice_selector.String = ""
   
     Controls.text.String = ""
-    Controls.convert_tts.IsDisabled = true
+    Controls.convert_tts.IsDisabled = true  
+    Controls.convert_and_play_tts.IsDisabled = true
   
   end
   

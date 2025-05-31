@@ -9,7 +9,7 @@ end
 
 -- The name that will initially display when dragged into a design
 function GetPrettyName(props)
-  return "Open Source TTS " .. PluginInfo.BuildVersion
+  return "ElevenLabs TTS " .. PluginInfo.BuildVersion
 end
 
 -- Optional function used if plugin has multiple pages

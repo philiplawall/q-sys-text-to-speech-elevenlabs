@@ -28,6 +28,8 @@ generate()
 
 -- Control logic
 
+autoPlay = false
+
 voice_names = {}
 voice_ids = {}
 
@@ -37,11 +39,22 @@ temp_languages = {}
 Controls.voice_selector.EventHandler = function()
   if Controls.voice_selector.String ~= "" then
     Controls.convert_tts.IsDisabled = false
+    Controls.convert_and_play_tts.IsDisabled = false
   end
 end
 
 Controls.convert_tts.EventHandler = function()
   convertTTS()
+end
+
+Controls.convert_and_play_tts.EventHandler = function()
+  autoPlay = true
+  convertTTS()
+  -- local selection = tonumber(Controls.slot_selector.String)
+  -- audio_player["root"].String = "Audio/"
+  -- audio_player["directory"].String = ""
+  -- audio_player["filename"].String = "Slot-" .. tostring(selection) .. "-tts.wav"
+  -- audio_player["play"]:Trigger()
 end
 
 Controls.text.EventHandler = function(self)
@@ -60,6 +73,10 @@ end
 
 function processTTS(data, text)
   local selection = tonumber(Controls.slot_selector.String)
+  if autoPlay then 
+    selection = 11
+  end
+  
   audio_file = io.open("media/Audio/Slot-" .. tostring(selection) .. "-tts.wav", "w+")
   if audio_file ~= nil then
     filedata = audio_file:write(data)
@@ -67,17 +84,30 @@ function processTTS(data, text)
   else
     pluginError("file==nil")
   end
+  
   text_file = io.open("media/Audio/Slot-" .. tostring(selection) .. "-tts.txt", "w+")
+  
   if text_file ~= nil then
     filedata = text_file:write(text)
     io.close(text_file)
   else
     pluginError("file==nil")
   end
-  Controls.slot_text[selection].String = Controls.text.String
+  if #Controls.slot_name >= selection then    
+    Controls.slot_text[selection].String = Controls.text.String
+  end
   updateControls()
   Controls.api_connected.Boolean = true
   Controls.api_connected.Color = "green"
+
+  if autoPlay then
+    print("Autoplaying audio for slot " .. tostring(selection))
+    audio_player["root"].String = "Audio/"
+    audio_player["directory"].String = ""
+    audio_player["filename"].String = "Slot-" .. tostring(selection) .. "-tts.wav"
+    audio_player["play"]:Trigger()
+    autoPlay = false
+  end
 end
 
 function updateControls()
@@ -85,7 +115,6 @@ function updateControls()
     Controls.text.IsDisabled = false
     Controls.slot_selector.IsDisabled = false
     Controls.voice_selector.IsDisabled = false
-    Controls.selected_voice.IsDisabled = false
     Controls.text.String = ""
     for i = 1, #Controls.slot_trigger do
       if io.open("media/Audio/Slot-" .. tostring(i) .. "-tts.wav", "r") then
@@ -118,7 +147,6 @@ function updateControls()
     Controls.text.IsDisabled = true
     Controls.slot_selector.IsDisabled = true
     Controls.voice_selector.IsDisabled = true
-    Controls.selected_voice.IsDisabled = true
   end
 end
 
@@ -130,12 +158,12 @@ function clearControls()
     Controls.slot_trigger[i].IsDisabled = true
     Controls.slot_delete[i].IsDisabled = true
   end
-  Controls.selected_voice.String = ""
 
   Controls.voice_selector.String = ""
 
   Controls.text.String = ""
-  Controls.convert_tts.IsDisabled = true
+  Controls.convert_tts.IsDisabled = true  
+  Controls.convert_and_play_tts.IsDisabled = true
 
 end
 
