@@ -121,6 +121,17 @@ if CurrentPage == "Main" then
     HTextAlign = "Center",
     VTextAlign = "Center"
   })
+  table.insert(graphics,{
+    Type = "Text",
+    Text = "Player",
+    Position = {260,117},
+    Size = {103,31},
+    Font = "Roboto",
+    FontSize = 14,
+    FontStyle = "Medium",
+    HTextAlign = "Center",
+    VTextAlign = "Center"
+  })
   layout["slot_selector"] = {
     PrettyName = "Slot Selector",
     Style = "ComboBox",
@@ -136,6 +147,17 @@ if CurrentPage == "Main" then
     PrettyName = "Voice Combo Box",
     Style = "ComboBox",
     Position = {135,148},
+    Size = {103,25},
+    Color = {255,255,255},
+    StrokeWidth = 2,
+    StrokeColor = {221,221,221},
+    CornerRadius = 10,
+    FontSize = 12
+  }
+  layout["player_selector"] = {
+    PrettyName = "Player Combo Box",
+    Style = "ComboBox",
+    Position = {260,148},
     Size = {103,25},
     Color = {255,255,255},
     StrokeWidth = 2,

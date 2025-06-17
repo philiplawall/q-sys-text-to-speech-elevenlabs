@@ -45,6 +45,14 @@ table.insert(ctrls, {
   UserPin = true
 })
 table.insert(ctrls, {
+  Name = "player_selector",
+  ControlType = "Text",
+  TextType = "Combo Box",
+  Count = 1,
+  PinStyle = "None",
+  UserPin = true
+})
+table.insert(ctrls, {
   Name = "slot_delete",
   ControlType = "Button",
   ButtonType = "Trigger",

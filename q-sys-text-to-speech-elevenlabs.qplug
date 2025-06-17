@@ -5,7 +5,7 @@
 PluginInfo = {
   Name = "ElevenLabs~Open Source Text to Speech",
   Version = "1.0",
-  BuildVersion = "1.0.0.8",
+  BuildVersion = "1.0.0.12",
   Id = "4c315943-9d5d-4995-a9da-c6d26d222a3d",
   Author = "Philip Lawall",
   Description = "Open source text to speech plugin that uses the ElevenLabs API."
@@ -121,6 +121,14 @@ function GetControls(props)
   })
   table.insert(ctrls, {
     Name = "voice_selector",
+    ControlType = "Text",
+    TextType = "Combo Box",
+    Count = 1,
+    PinStyle = "None",
+    UserPin = true
+  })
+  table.insert(ctrls, {
+    Name = "player_selector",
     ControlType = "Text",
     TextType = "Combo Box",
     Count = 1,
@@ -318,6 +326,17 @@ Contact me via GitHub, send a message or open an issue, if you have any problems
       HTextAlign = "Center",
       VTextAlign = "Center"
     })
+    table.insert(graphics,{
+      Type = "Text",
+      Text = "Player",
+      Position = {260,117},
+      Size = {103,31},
+      Font = "Roboto",
+      FontSize = 14,
+      FontStyle = "Medium",
+      HTextAlign = "Center",
+      VTextAlign = "Center"
+    })
     layout["slot_selector"] = {
       PrettyName = "Slot Selector",
       Style = "ComboBox",
@@ -333,6 +352,17 @@ Contact me via GitHub, send a message or open an issue, if you have any problems
       PrettyName = "Voice Combo Box",
       Style = "ComboBox",
       Position = {135,148},
+      Size = {103,25},
+      Color = {255,255,255},
+      StrokeWidth = 2,
+      StrokeColor = {221,221,221},
+      CornerRadius = 10,
+      FontSize = 12
+    }
+    layout["player_selector"] = {
+      PrettyName = "Player Combo Box",
+      Style = "ComboBox",
+      Position = {260,148},
       Size = {103,25},
       Color = {255,255,255},
       StrokeWidth = 2,
@@ -653,6 +683,28 @@ if Controls then
   
   generate()
   
+  Components = {}                                  --Create a table called Components
+  DebugOutput = ""                                 --Build string to be displayed in the Debug Output window
+  Components = Component.GetComponents()           --Set Components table equal to the table returned by Component.GetComponents()
+  
+  for _,v1 in ipairs(Components) do   
+    DebugOutput = "\nName: "..v1.Name              --Add the component name to the DebugOutput string
+    DebugOutput = DebugOutput.."\nType: "..v1.Type --Add the component type to the DebugOutput string
+    DebugOutput = DebugOutput.."\nProperties:"     --Add Properties text to the DebugOutput string
+    for _,v2 in ipairs(v1.Properties) do           --Add the list of properties to the DebugOutput string
+      for k3,v3 in pairs(v2) do 
+        DebugOutput = DebugOutput.."\n      "..k3.." = "..v3
+      end
+      DebugOutput = DebugOutput.."\n"
+    end 
+    print (DebugOutput)                            --Print the DebugOutput string     
+  end
+  
+  audio_player["playing"].EventHandler = function(self)
+    print("Audio Player Playing: " .. tostring(self.Boolean))
+  end
+  
+  
   -- Control logic
   
   autoPlay = false
@@ -729,6 +781,7 @@ if Controls then
   
     if autoPlay then
       print("Autoplaying audio for slot " .. tostring(selection))
+      audio_player["stop"]:Trigger()
       audio_player["root"].String = "Audio/"
       audio_player["directory"].String = ""
       audio_player["filename"].String = "Slot-" .. tostring(selection) .. "-tts.wav"
@@ -824,7 +877,8 @@ if Controls then
   
   function convertTTS() -- HTTP POST for request a text to speech conversion
     local data = {
-      text = Controls.text.String
+      text = Controls.text.String,
+      apply_text_normalization = "on"
     }
   
     voice_id = ""

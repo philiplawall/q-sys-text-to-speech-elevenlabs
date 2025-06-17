@@ -26,6 +26,24 @@ end
 
 generate()
 
+Components = {}                                  --Create a table called Components
+DebugOutput = ""                                 --Build string to be displayed in the Debug Output window
+Components = Component.GetComponents()           --Set Components table equal to the table returned by Component.GetComponents()
+PlayerComponents = {}
+
+
+for _,v1 in ipairs(Components) do   
+  if v1.Type == "audio_file_player" then
+    table.insert(PlayerComponents, v1)
+  end     
+end
+
+Controls.player_selector.Choices = PlayerComponents
+
+audio_player["playing"].EventHandler = function(self)
+  print("Audio Player Playing: " .. tostring(self.Boolean))
+end
+
 -- Control logic
 
 autoPlay = false
@@ -102,6 +120,7 @@ function processTTS(data, text)
 
   if autoPlay then
     print("Autoplaying audio for slot " .. tostring(selection))
+    audio_player["stop"]:Trigger()
     audio_player["root"].String = "Audio/"
     audio_player["directory"].String = ""
     audio_player["filename"].String = "Slot-" .. tostring(selection) .. "-tts.wav"
@@ -197,7 +216,8 @@ end
 
 function convertTTS() -- HTTP POST for request a text to speech conversion
   local data = {
-    text = Controls.text.String
+    text = Controls.text.String,
+    apply_text_normalization = "on"
   }
 
   voice_id = ""
